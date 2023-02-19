@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "moduleResolution": "nodenext",
+    "esModuleInterop": false,
+    "checkJs": true,
+    "skipLibCheck": true
+  },
+  "include": ["index.js"],
+  "exclude": ["node_modules"]
+}
