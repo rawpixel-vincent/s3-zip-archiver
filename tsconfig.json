@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "moduleResolution": "nodenext",
+    "esModuleInterop": false,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["index.js"],
+  "exclude": ["node_modules"]
+}
