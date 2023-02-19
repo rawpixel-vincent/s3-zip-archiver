@@ -1,5 +1,6 @@
 
 [![CodeQL](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql)
+[![ESLint](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/eslint.yml/badge.svg)](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/eslint.yml)
 
 # s3-zip-archiver
 
