@@ -24,7 +24,7 @@ const notifyCompletion = async (completionState) => {
 
 /**
  * @param {ZipperOptions} options
- * @returns {Promise<Object>}
+ * @returns {Promise<void>}
  */
 export const zipper = async (options) => {
   const {
@@ -39,7 +39,7 @@ export const zipper = async (options) => {
     maxConcurrentDownloads = 25,
     minConcurrentDownloads = 4,
   } = options;
-  const downloadState = { count: 0, MAX: minConcurrentDownloads };
+  const downloadState = { count: 0 };
   const completionState = {
     count: 0,
     total: sourceFiles.length,
@@ -127,8 +127,8 @@ export const zipper = async (options) => {
 
     // Limit getObject opened streams.
     const max = Math.max(
-      downloadState.MAX,
-      Math.min(maxConcurrentDownloads, downloadState.MAX + index - 6),
+      minConcurrentDownloads,
+      Math.min(maxConcurrentDownloads, minConcurrentDownloads + index - 6),
     );
     if (downloadState.count > max) {
       await waitUntilValueMatch(downloadState, 'count', max, 'lte');
