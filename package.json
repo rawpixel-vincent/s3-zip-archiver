@@ -1,7 +1,7 @@
 {
   "name": "s3-zip-archiver",
   "version": "1.0.0",
-  "description": "",
+  "description": "Read and upload a zip archive of s3 files to s3 using streams",
   "main": "index.js",
   "packageManager": "npm@9.5.0",
   "type": "module",
