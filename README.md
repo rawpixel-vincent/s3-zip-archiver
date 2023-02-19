@@ -1,4 +1,8 @@
+
+[![CodeQL](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql)
+
 # s3-zip-archiver
+
 Read and upload a zip archive of s3 files to s3 using streams
 
 ## Example
