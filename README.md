@@ -4,7 +4,11 @@
 
 # s3-zip-archiver
 
-Read and upload a zip archive of s3 files to s3 using streams
+Upload to s3 a zip archive of s3 files using node streams.
+
+- Open streams of the s3 files using @aws-sdk/client-s3
+- Pipe the file stream into a zip archive using https://www.npmjs.com/package/archiver
+- Pipe the zip archive to s3 using @aws-sdk/lib-storage
 
 ## Example
 
@@ -36,11 +40,18 @@ await zipper({
   onFileMissing: async (key) => {
     console.log('onFileMissing', key);
   },
-  onProgress: async (progress) => {
+  onFileDownloaded: async (key, completed) => {
+    console.log('onFileDownloaded', key);
+    console.log('completed', completed, 'downloads');
+  },
+  onHttpUploadProgress: async (progress) => {
     console.log('onProgress', progress);
   },
   onComplete: async (result) => {
     console.log('onComplete', result);
   },
+  maxConcurrentDownloads = 25,
+  minConcurrentDownloads = 4,
+  streamArchiverOptions = {},
 });
 ```
