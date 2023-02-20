@@ -2,7 +2,7 @@ import archiver from 'archiver';
 import stream from 'stream';
 import { Upload } from '@aws-sdk/lib-storage';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
-import { waitUntilValueMatch } from './utils.js';
+import { validateZipperOptions, waitUntilValueMatch } from './utils.mjs';
 
 const notifyCompletion = async (completionState) => {
   completionState.count += 1;
@@ -14,12 +14,14 @@ const notifyCompletion = async (completionState) => {
  * @property {string} destinationBucket
  * @property {string} destinationKey
  * @property {Array<{key: string, name: string, bucket: string}>} sourceFiles
+ * @property {(result: {bucket: string, key: string, filesize: number}) => Promise<void>} onComplete
  * @property {(err: Error) => Promise<void>} [onError]
- * @property {(progress: import('@aws-sdk/lib-storage').Progress) => Promise<void>} [onProgress]
+ * @property {(progress: import('@aws-sdk/lib-storage').Progress) => Promise<void>} [onHttpUploadProgress]
  * @property {(key: string) => Promise<void>} [onFileMissing]
- * @property {(result: {bucket: string, key: string, filesize: number}) => Promise<void>} [onComplete]
+ * @property {(key: string, completed: number) => Promise<void>} onFileDownloaded
  * @property {number} [maxConcurrentDownloads]
  * @property {number} [minConcurrentDownloads]
+ * @property {Parameters<import('archiver')>[1]} [streamArchiverOptions]
  */
 
 /**
@@ -27,18 +29,21 @@ const notifyCompletion = async (completionState) => {
  * @returns {Promise<void>}
  */
 export const zipper = async (options) => {
+  validateZipperOptions(options);
   const {
     s3Client,
     destinationBucket,
     destinationKey,
     sourceFiles,
     onError,
-    onProgress,
+    onHttpUploadProgress,
     onFileMissing,
     onComplete,
     maxConcurrentDownloads = 25,
     minConcurrentDownloads = 4,
+    streamArchiverOptions = {},
   } = options;
+
   const downloadState = { count: 0 };
   const completionState = {
     count: 0,
@@ -53,6 +58,7 @@ export const zipper = async (options) => {
     forceZip64: true,
     store: true,
     statConcurrency: 125,
+    ...(streamArchiverOptions || {}),
   });
 
   // Create and upload a stream of the archive file.
@@ -73,8 +79,8 @@ export const zipper = async (options) => {
   });
   upload.on('httpUploadProgress', async (progress) => {
     // console.log('progress', progress);
-    if (onProgress) {
-      await onProgress(progress);
+    if (onHttpUploadProgress) {
+      await onHttpUploadProgress(progress);
     }
   });
   upload.done().then(async () => {

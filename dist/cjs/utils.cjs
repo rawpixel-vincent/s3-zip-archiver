@@ -17,6 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var utils_exports = {};
 __export(utils_exports, {
+  validateZipperOptions: () => validateZipperOptions,
   waitUntilValueMatch: () => waitUntilValueMatch
 });
 module.exports = __toCommonJS(utils_exports);
@@ -61,7 +62,50 @@ const waitUntilValueMatch = async (props, field, value, operator = "eq") => {
     await new Promise((r) => setTimeout(r, 50));
   }
 };
+const validateZipperOptions = (options) => {
+  if (options.maxConcurrentDownloads < options.minConcurrentDownloads) {
+    throw new Error(
+      "maxConcurrentDownloads must be greater than or equal to minConcurrentDownloads"
+    );
+  }
+  if (options.minConcurrentDownloads < 1) {
+    throw new Error("minConcurrentDownloads must be greater than 0");
+  }
+  if (options.maxConcurrentDownloads < 1) {
+    throw new Error("maxConcurrentDownloads must be greater than 0");
+  }
+  if (!options.sourceFiles.length) {
+    throw new Error(
+      "sourceFiles must contain at least one file to download and zip"
+    );
+  }
+  if (!options.destinationBucket) {
+    throw new Error("destinationBucket must be provided");
+  }
+  if (!options.destinationKey) {
+    throw new Error("destinationKey must be provided");
+  }
+  if (!options.s3Client) {
+    throw new Error("s3Client must be provided");
+  }
+  if (!options.onComplete) {
+    throw new Error("onComplete must be provided");
+  }
+  if (options.onError && typeof options.onError !== "function") {
+    throw new Error("onError must be a function");
+  }
+  if (options.onHttpUploadProgress && typeof options.onHttpUploadProgress !== "function") {
+    throw new Error("onProgress must be a function");
+  }
+  if (options.onFileMissing && typeof options.onFileMissing !== "function") {
+    throw new Error("onFileMissing must be a function");
+  }
+  if (options.onFileDownloaded && typeof options.onFileDownloaded !== "function") {
+    throw new Error("onFileDownloaded must be a function");
+  }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  validateZipperOptions,
   waitUntilValueMatch
 });

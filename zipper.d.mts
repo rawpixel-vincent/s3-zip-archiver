@@ -8,14 +8,17 @@ export type ZipperOptions = {
         name: string;
         bucket: string;
     }>;
-    onError?: (err: Error) => Promise<void>;
-    onProgress?: (progress: import('@aws-sdk/lib-storage').Progress) => Promise<void>;
-    onFileMissing?: (key: string) => Promise<void>;
-    onComplete?: (result: {
+    onComplete: (result: {
         bucket: string;
         key: string;
         filesize: number;
     }) => Promise<void>;
+    onError?: (err: Error) => Promise<void>;
+    onHttpUploadProgress?: (progress: import('@aws-sdk/lib-storage').Progress) => Promise<void>;
+    onFileMissing?: (key: string) => Promise<void>;
+    onFileDownloaded: (key: string, completed: number) => Promise<void>;
     maxConcurrentDownloads?: number;
     minConcurrentDownloads?: number;
+    streamArchiverOptions?: [format: archiver.Format, options?: archiver.ArchiverOptions][1];
 };
+import archiver from "archiver";

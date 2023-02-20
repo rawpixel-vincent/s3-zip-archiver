@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "target": "ESNext",
-    "lib": ["ESNext"],
+    "module": "Node16",
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "declaration": true,
     "emitDeclarationOnly": true,
     "moduleResolution": "nodenext",
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "checkJs": true,
+    "allowJs": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "."
   },
-  "include": ["index.js"],
+  "include": ["index.mjs"],
   "exclude": ["node_modules"]
 }
