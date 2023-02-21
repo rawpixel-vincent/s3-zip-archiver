@@ -57,7 +57,6 @@ export const zipper = async (options) => {
     },
     forceZip64: true,
     store: true,
-    statConcurrency: 125,
     ...(streamArchiverOptions || {}),
   });
 
@@ -74,7 +73,6 @@ export const zipper = async (options) => {
       Key: destinationKey,
       Body: uploadStream,
       ACL: 'private',
-      ContentType: 'application/zip',
     },
   });
   upload.on('httpUploadProgress', async (progress) => {
