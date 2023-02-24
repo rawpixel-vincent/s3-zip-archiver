@@ -14,7 +14,7 @@ Upload to s3 a zip archive of s3 files using node streams.
 
 ```javascript
 import { S3Client } from '@aws-sdk/client-s3';
-import { zipper } from './index.js';
+import { zipper } from 's3-zip-archiver';
 
 await zipper({
   s3Client: new S3Client({
