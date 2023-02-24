@@ -1,4 +1,5 @@
 
+[![npm](https://img.shields.io/npm/v/s3-zip-archiver)](https://www.npmjs.com/package/s3-zip-archiver)
 [![CodeQL](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/github-code-scanning/codeql)
 [![ESLint](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/eslint.yml/badge.svg)](https://github.com/rawpixel-vincent/s3-zip-archiver/actions/workflows/eslint.yml)
 
