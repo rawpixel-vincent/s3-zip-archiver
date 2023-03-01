@@ -1,18 +1,24 @@
 {
   "name": "s3-zip-archiver",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "Read and upload a zip archive of s3 files to s3 using streams",
-  "main": "index.mjs",
-  "types": "index.d.mts",
+  "main": "./index.mjs",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "module": "./index.mjs",
   "type": "module",
+  "types": "./index.d.mts",
   "scripts": {
-    "build": "npm run types:emit && npm run bundle:cjs && npm run bundle:esm",
-    "bundle:cjs": "rm -rf dist/cjs || true && mkdir -p dist/cjs && esbuild --platform=node index.mjs utils.mjs --target=node18 --format=cjs --outdir=dist/cjs --out-extension:.js=.cjs",
-    "bundle:esm": "rm -rf dist/esm || true && mkdir -p dist/esm && esbuild --platform=node index.mjs utils.mjs --target=node18 --format=esm --outdir=dist/esm --out-extension:.js=.mjs",
+    "build": "npm run types:emit && npm run bundle:cjs",
+    "bundle:cjs": "rm -rf dist/cjs || true && mkdir -p dist/cjs && esbuild --bundle --packages=external --platform=node index.mjs --target=node16 --format=cjs --outdir=dist/cjs --out-extension:.js=.js && git add dist/cjs/index.js",
     "types:emit": "tsc --allowJs",
-    "precommit": "lint-staged && npm run build && git add dist/.",
+    "precommit": "lint-staged && npm run build",
     "prepare": "husky install",
-    "prettier": "prettier --write \"./*.js\"",
+    "prettier": "prettier --write \"./*.mjs\"",
     "lint": "eslint . --ext .mjs --fix",
     "eslint": "eslint . --ext .mjs"
   },
@@ -43,14 +49,8 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "eslint *.js --fix"
+      "eslint *.mjs --fix"
     ]
-  },
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.cjs",
-      "import": "./dist/esm/index.mjs"
-    }
   },
   "packageManager": "npm@9.5.0",
   "repository": {

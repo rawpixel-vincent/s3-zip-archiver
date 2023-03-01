@@ -1,6 +1,13 @@
 import { zipper } from './zipper.mjs';
-import { validateZipperOptions, waitUntilValueMatch } from './utils.mjs';
-export default {
+import { waitUntilValueMatch, validateZipperOptions } from './utils.mjs';
+
+const utils = { waitUntilValueMatch, validateZipperOptions };
+
+const s3ZipArchiver = {
   zipper,
-  utils: { validateZipperOptions, waitUntilValueMatch },
+  utils,
 };
+
+export default s3ZipArchiver;
+
+export { zipper, utils };

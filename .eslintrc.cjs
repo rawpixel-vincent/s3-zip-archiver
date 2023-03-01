@@ -6,7 +6,16 @@ module.exports = {
     browser: true,
   },
   extends: ['eslint:recommended', 'prettier'],
-  overrides: [],
+  overrides: [
+    {
+      files: ['./dist/cjs/*.js'],
+      extends: ['eslint:recommended', 'prettier'],
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'commonjs',
+      },
+    },
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
