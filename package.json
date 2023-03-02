@@ -1,6 +1,6 @@
 {
   "name": "s3-zip-archiver",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Read and upload a zip archive of s3 files to s3 using streams",
   "main": "./index.mjs",
   "exports": {
@@ -21,6 +21,9 @@
     "prettier": "prettier --write \"./*.mjs\"",
     "lint": "eslint . --ext .mjs --fix",
     "eslint": "eslint . --ext .mjs"
+  },
+  "dependencies": {
+    "archiver": "^5"
   },
   "peerDependencies": {
     "@aws-sdk/client-s3": "^3",

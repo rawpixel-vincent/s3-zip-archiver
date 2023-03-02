@@ -4,10 +4,6 @@ import { Upload } from '@aws-sdk/lib-storage';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { validateZipperOptions, waitUntilValueMatch } from './utils.mjs';
 
-const notifyCompletion = async (completionState) => {
-  completionState.count += 1;
-};
-
 /**
  * @typedef {Object} ZipperOptions
  * @property {import('@aws-sdk/client-s3').S3Client} s3Client
@@ -38,6 +34,7 @@ export const zipper = async (options) => {
     onError,
     onHttpUploadProgress,
     onFileMissing,
+    onFileDownloaded,
     onComplete,
     maxConcurrentDownloads = 25,
     minConcurrentDownloads = 4,
@@ -48,7 +45,6 @@ export const zipper = async (options) => {
   const completionState = {
     count: 0,
     total: sourceFiles.length,
-    notifying: false,
   };
 
   const streamArchiver = archiver('zip', {
@@ -105,6 +101,7 @@ export const zipper = async (options) => {
     if (!res?.Body) {
       if (onFileMissing) {
         await onFileMissing(key);
+        completionState.count += 1;
       }
       continue;
     }
@@ -116,7 +113,8 @@ export const zipper = async (options) => {
     const fileReadStream = res.Body;
     fileReadStream.on('end', async () => {
       downloadState.count -= 1;
-      await notifyCompletion(completionState);
+      completionState.count += 1;
+      await onFileDownloaded(key, completionState.count);
     });
 
     fileReadStream.on('error', async (err) => {

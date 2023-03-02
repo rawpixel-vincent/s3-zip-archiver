@@ -127,9 +127,6 @@ var validateZipperOptions = (options) => {
 };
 
 // zipper.mjs
-var notifyCompletion = async (completionState) => {
-  completionState.count += 1;
-};
 var zipper = async (options) => {
   validateZipperOptions(options);
   const {
@@ -140,6 +137,7 @@ var zipper = async (options) => {
     onError,
     onHttpUploadProgress,
     onFileMissing,
+    onFileDownloaded,
     onComplete,
     maxConcurrentDownloads = 25,
     minConcurrentDownloads = 4,
@@ -148,8 +146,7 @@ var zipper = async (options) => {
   const downloadState = { count: 0 };
   const completionState = {
     count: 0,
-    total: sourceFiles.length,
-    notifying: false
+    total: sourceFiles.length
   };
   const streamArchiver = (0, import_archiver.default)("zip", {
     zlib: {
@@ -197,6 +194,7 @@ var zipper = async (options) => {
     if (!(res == null ? void 0 : res.Body)) {
       if (onFileMissing) {
         await onFileMissing(key);
+        completionState.count += 1;
       }
       continue;
     }
@@ -204,7 +202,8 @@ var zipper = async (options) => {
     const fileReadStream = res.Body;
     fileReadStream.on("end", async () => {
       downloadState.count -= 1;
-      await notifyCompletion(completionState);
+      completionState.count += 1;
+      await onFileDownloaded(key, completionState.count);
     });
     fileReadStream.on("error", async (err) => {
       if (onError) {
