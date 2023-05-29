@@ -34,7 +34,7 @@
     "@aws-sdk/client-s3": "^3",
     "@aws-sdk/lib-storage": "^3",
     "@types/archiver": "^5",
-    "@types/node": "^18.14.0",
+    "@types/node": "^20.2.5",
     "archiver": "^5",
     "esbuild": "^0.17.9",
     "eslint": "^8.34.0",
